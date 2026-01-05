@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Order #{{ order.id }} chat</h2>
+
+<div>
+    {% for message in messages %}
+        <p>
+            <strong>{{ message.sender.user.username }}:</strong>
+            {{ message.text }}
+            <small>{{ message.created_at }}</small>
+        </p>
+    {% empty %}
+        <p>Hozircha xabar yo‘q</p>
+    {% endfor %}
+</div>
+
+<hr>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Yuborish</button>
+</form>
+{% endblock %}
+<a href="{% url 'order_chat' order.id %}">Chat</a>

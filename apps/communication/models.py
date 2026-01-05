@@ -5,23 +5,25 @@ from apps.orders.models import Order
 
 
 class Message(TimeStampedModel):
-    # qaysi order bo‘yicha yozilyapti (chat orderga bog‘liq)
+    # qaysi orderga tegishli chat
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
         related_name='messages'
-        
     )
 
-    # kim yubordi
+    # kim yubordi (client yoki freelancer)
     sender = models.ForeignKey(
         Profile,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='sent_messages'
     )
 
     # xabar matni
     text = models.TextField()
-    # o'qilgan yoki yo'qligi
+
+    # o‘qilgan yoki yo‘qligi
     is_read = models.BooleanField(default=False)
+
     def __str__(self):
-        return f"Message from {self.sender.user.username} in Order #{self.order.id}"
+        return f"Message #{self.id} (Order {self.order.id})"

@@ -1,4 +1,8 @@
 from django.contrib import admin
 from .models import Message
 
-admin.site.register(Message)
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order', 'sender', 'is_read', 'created_at')
+    list_filter = ('is_read',)
