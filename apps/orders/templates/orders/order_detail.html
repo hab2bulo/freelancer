@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+
+  <!-- ========================= -->
+  <!-- ORDER ASOSIY MA'LUMOTLARI -->
+  <!-- ========================= -->
+  <h2>Order #{{ order.id }}</h2>
+
+  <p>
+    <strong>Status:</strong>
+    {{ order.get_status_display }}
+  </p>
+
+  <p>
+    <strong>Client:</strong>
+    {{ order.client.username }}
+  </p>
+
+  <p>
+    <strong>Freelancer:</strong>
+    {{ order.freelancer.username }}
+  </p>
+
+  <p>
+    <strong>Narx:</strong>
+    {{ order.price }}
+  </p>
+
+  <p>
+    <strong>Deadline:</strong>
+    {{ order.deadline }}
+  </p>
+
+  <!-- Agar order service orqali bo‘lsa -->
+  {% if order.service %}
+    <p>
+      <strong>Service:</strong>
+      {{ order.service.title }}
+    </p>
+  {% endif %}
+
+  <!-- Agar order proposal orqali bo‘lsa -->
+  {% if order.proposal %}
+    <p>
+      <strong>Proposal:</strong>
+      {{ order.proposal.title }}
+    </p>
+  {% endif %}
+
+  <hr>
+
+  <!-- ========================= -->
+  <!-- STATUSGA QARAB AMALLAR -->
+  <!-- ========================= -->
+
+  <!-- FREELANCER UCHUN -->
+  {% if user == order.freelancer %}
+
+    <!-- pending holatida freelancer qabul qilishi mumkin -->
+    {% if order.status == 'pending' %}
+      <form method="post" action="{% url 'order_accept' order.id %}">
+        {% csrf_token %}
+        <button type="submit">Orderni qabul qilish</button>
+      </form>
+    {% endif %}
+
+    <!-- accepted holatida ishni boshlaydi -->
+    {% if order.status == 'accepted' %}
+      <form method="post" action="{% url 'order_start' order.id %}">
+        {% csrf_token %}
+        <button type="submit">Ishni boshlash</button>
+      </form>
+    {% endif %}
+
+    <!-- in_progress holatida ishni tugatadi -->
+    {% if order.status == 'in_progress' %}
+      <form method="post" action="{% url 'order_complete' order.id %}">
+        {% csrf_token %}
+        <button type="submit">Ishni yakunlash</button>
+      </form>
+    {% endif %}
+
+  {% endif %}
+
+  <!-- CLIENT VA FREELANCER IKKALASI UCHUN -->
+  {% if user == order.client or user == order.freelancer %}
+    {% if order.status != 'completed' and order.status != 'cancelled' %}
+      <form method="post" action="{% url 'order_cancel' order.id %}">
+        {% csrf_token %}
+        <button type="submit">Orderni bekor qilish</button>
+      </form>
+    {% endif %}
+  {% endif %}
+
+</div>
+{% endblock %}
