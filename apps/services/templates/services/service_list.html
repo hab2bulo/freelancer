@@ -1,0 +1,14 @@
+<h2>Services</h2>
+
+{% for service in services %}
+  <div>
+    <h3>{{ service.title }}</h3>
+    <p>{{ service.description }}</p>
+    <p>Price: {{ service.price }}</p>
+    <p>Delivery: {{ service.delivery_days }} days</p>
+    <p>Category: {{ service.category }}</p>
+    <p>Owner: {{ service.owner.user.username }}</p>
+  </div>
+{% empty %}
+  <p>No services available</p>
+{% endfor %}

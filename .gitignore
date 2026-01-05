@@ -1,0 +1,32 @@
+# Python va Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.sqlite3-journal
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# Environment variables
+.env
+*.env
+
+# Media va static (productionda serverda saqlanadi)
+media/
+staticfiles/
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
